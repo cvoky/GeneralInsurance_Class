@@ -10,10 +10,14 @@ data_lesson2_KPI_prep_react <- reactive({
   
   prepared <- 
     dt %>% # copy all data manipulation we have done in data preparation for KPIs definition
-    #
-    #
-    #
-    #
+    filter(Premium > 0,
+           Losses > 0, 
+           Expenses > 0
+    ) %>% 
+    mutate(LR = Losses / Premium, 
+           ER = Expenses / Premium, 
+           CoR = (Losses + Expenses) / Premium
+    ) 
   
   prepared
 })
@@ -31,38 +35,29 @@ output$lesson2_KPI_multidim_table <- renderDataTable({
   dt_prep <- 
     dt_prep %>%
     group_by_at(vars(input$lesson2_kpi_multidim_select_axis)) %>% 
-    # summarize(LR = , 
-    #           ER = ,
-    #           CoR = ,
-    #           Premium = ,
-    #           UWR = 
-    # )
+    summarize(LR = mean(LR, na.rm =TRUE), 
+              ER = mean(ER, na.rm = TRUE), 
+              CoR = mean(CoR, na.rm = TRUE)
+    )
     
   
   DT::datatable(dt_prep,
                 rownames = FALSE,
                 class = "hover") %>% 
-    DT::formatPercentage(c("LR", "ER", "CoR")) %>% 
-    DT::formatCurrency(c("UWR", "Premium"), digits = 0) 
+    DT::formatPercentage(c("LR", "ER", "CoR"))
 })
 
 output$lesson2_KPI_multidim_ratio_graph <- renderPlot({
 
   data_lesson2_KPI_multidim_prep_filter_react() %>% 
     group_by_at(vars(input$lesson2_kpi_multidim_select_axis)) %>% 
-    # summarize(LR = , 
-    #           ER = ,
-    #           CoR = ,
-    #           Premium = ,
-    #           UWR = 
-    # ) %>% 
+    summarize(LR = mean(LR, na.rm =TRUE), 
+              ER = mean(ER, na.rm = TRUE), 
+              CoR = mean(CoR, na.rm = TRUE)
+    ) %>% 
     ggplot() +
       geom_col(
-      #
-      #
-      #
-      #
-      #
+        aes_string(x = input$lesson2_kpi_multidim_select_axis, y = "LR")
       ) +
       geom_hline(yintercept = 1) +
       ylab("Ratios") +
@@ -73,9 +68,9 @@ output$lesson2_KPI_multidim_ratio_graph <- renderPlot({
 })
 
 output$lesson2_KPI_multidim_UWR_graph <- renderPlot({
-  # Homework
-  data_lesson2_KPI_multidim_prep_filter_react() %>% 
-
+  # # Homework
+  # data_lesson2_KPI_multidim_prep_filter_react() %>% 
+  # 
 
 })
 
