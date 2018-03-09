@@ -55,7 +55,7 @@ histogramy targetov, mozno test ze ci fituje na gammu.
 
 ### One-Way
 pouzitim targetu urob onw-way v ggplote a na DU moznost shiny?
-urob jeden example ktory dava zmysel, a druhy nech najdu oni.
+urob jeden example ktory dava zmysel, a druhy nech najdu oni. First use ggplot, then let them use @cvoky's app in shiny to do the one way, let them understand it and then use it to look for factors w/ trends
 
 
 
